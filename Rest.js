@@ -338,7 +338,7 @@ app.put('/moureJugador/codiPartida/:aposta/:quantitat?', (req, res)=>{
   var apostaBoolean = parseInt(req.params.aposta);
   if(apostaBoolean == 0){
     apostar = 0;
-    res.send("no has apostado");
+    res.send("You have not bet yet");
   }
   else if(apostaBoolean == 1){
       (apostar)?res.send("You have bet " + apostar):res.send("You must insert credits to bet");
