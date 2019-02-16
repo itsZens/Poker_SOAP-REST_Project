@@ -313,7 +313,7 @@ app.post('/iniciarjoc/codiPartida', (req, res)=>{
   console.log('req.body.codi');
   var partida={codi: req.body.codi};
   partidas.push(partida);
-  res.send("Has entrado en la sala "+ req.body.codi);
+  res.send("You have joined lobby "+ req.body.codi);
 });
 
 app.get('/obtenirCarta/codiPartida', (req, res)=>{
@@ -341,8 +341,8 @@ app.put('/moureJugador/codiPartida/:aposta/:quantitat?', (req, res)=>{
     res.send("no has apostado");
   }
   else if(apostaBoolean == 1){
-      (apostar)?res.send("Has apostado " + apostar):res.send("TIENES QUE PONER DINERO PARA APOSTAR");
-  }else res.send("tienes que poner 0 para NO apostar o 1 para APOSTAR y la CANTIDAD");
+      (apostar)?res.send("You have bet " + apostar):res.send("You must insert credits to bet");
+  }else res.send("0 --> Not to bet || 1 --> To bet and insert the quantity you want to bet");
   
 });
 app.get('/obtenirCarta/codiPartida', (req, res)=>{
@@ -362,5 +362,5 @@ app.put('/tirarCarta/codiPartida/:carta', (req, res)=>{
     
 });
 
-app.listen(3000, ()=>console.log('inici servidor'));
+app.listen(3000, ()=>console.log('Server started at localhost:3000'));
 
