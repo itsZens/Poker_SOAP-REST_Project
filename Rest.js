@@ -316,23 +316,92 @@ app.post('/iniciarjoc/codiPartida', (req, res)=>{
   res.send("You have joined lobby "+ req.body.codi);
 });
 
-app.get('/obtenirCarta/codiPartida', (req, res)=>{
-    res.send(baraja);
-
-});
-
-app.get('/mostrarCartes/codiPartida', (req, res)=>{
-    var cartasMostrar = "";
+app.get('/obtenirCarta/:codi', (req, res)=>{
+  var partida = partidas.find(a =>a.codi===parseInt(req.params.codi));
+  console.log(partida);
+  if (typeof partida == "undefined"){ res.send('error NO EXISTE EL CODIGO DE PARTIDA');}
+  else{
+      var p = [];
+      var p1 = [];
+      var p2 = [];
+      for (var i = 0; i <= 2;) {
+          k = Math.floor(Math.random() * cartasTotales.length+1);
+          var numAlreadyIn = false;
+          for (var j = 0; j < p.length; j++) {
+              if (p[j] == k) {
+                  numAlreadyIn = true;
+                  break;
+              } else {
+                  numAlreadyIn = false;
+                  
+              }
+          } 
+          p.push(k);
+          if (!numAlreadyIn) {
+              if (i % 2 == 1) {
+                  p1.push(k);
+              } else if (i % 2 == 0) {
+                  p2.push(k);
+              }
+              i++;
+          }
+      }
+  
     for (var i = 0; i < cartasTotales.length; i++){
-        for(j=0;j<=5;j++){
-            if(cartasTotales[i].id==baraja[j])
-            cartasMostrar += `<img widht='20px' src=${JSON.stringify(cartasTotales[i].imagen)}/> `;
-            //res.send(cartasTotales[i].palo);
-        }
+          if(cartasTotales[i].id==p1){
+          cartasMostrar += `<img width="5%" src=${JSON.stringify(cartasTotales[i].imagen)}/> `;
+          cartasRobadas += `<img width="5%" src=${JSON.stringify(cartasTotales[i].imagen)}/> `;
+          }
+          //res.send(cartasTotales[i].palo);
     }
-
-    res.send(cartasMostrar);
+    res.send("Carta repartida");
+      //cartasMostrar += `<img width="5%" src=${JSON.stringify(robo.imagen)}/> `;
+      //console.log(robo);
+  }
 });
+
+
+app.get('/mostrarcartes/:codi', (req, res)=>{
+  var partida = partidas.find(a =>a.codi===parseInt(req.params.codi));
+  console.log(partida);
+  if (typeof partida == "undefined"){ res.send('error NO EXISTE EL CODIGO DE PARTIDA');}
+  else{
+      if(cont==0){
+  //var cartasMostrar = "";
+  for (var i = 0; i < cartasTotales.length; i++){
+      for(j=0;j<=5;j++){
+          if(cartasTotales[i].id==barajado[j])
+          cartasMostrar += `<img src=${JSON.stringify(cartasTotales[i].imagen)} width="5%" /> `;
+      }
+       
+  }cont++;
+  }res.send(cartasMostrar);
+  }
+  //res.send("para la partida " + partida.codi +" tus cartas son " + barajado);
+});
+
+
+app.put('/tirarCarta/:codi/:carta', (req, res)=>{
+  var partida = partidas.find(a =>a.codi===parseInt(req.params.codi));
+  console.log(partida);
+  if (typeof partida == "undefined"){ res.send('error NO EXISTE EL CODIGO DE PARTIDA');}
+  else{
+  var borrado = parseInt(req.params.carta);
+  console.log(borrado);
+  for (var i = 0; i < barajado.length; i++) {
+      if (barajado[i] == barajado[borrado-1]) {
+          barajado.splice(i, 1);
+        break;
+      }
+    }
+    res.send(barajado);
+    cartasMostrar = cartasRobadas;
+    cont=0;
+  } 
+});
+
+
+
 app.put('/moureJugador/codiPartida/:aposta/:quantitat?', (req, res)=>{
   var apostar = parseInt(req.params.quantitat);
   var apostaBoolean = parseInt(req.params.aposta);
@@ -345,22 +414,8 @@ app.put('/moureJugador/codiPartida/:aposta/:quantitat?', (req, res)=>{
   }else res.send("0 --> Not to bet || 1 --> To bet and insert the quantity you want to bet");
   
 });
-app.get('/obtenirCarta/codiPartida', (req, res)=>{
-  res.send(baraja);
 
-});
-app.put('/tirarCarta/codiPartida/:carta', (req, res)=>{
-  var borrado = parseInt(req.params.carta);
-  console.log(borrado);
-  for (var i = 0; i < baraja.length; i++) {
-      if (baraja[i] == baraja[borrado-1]) {
-          baraja.splice(i, 1);
-        break;
-      }
-    }
-    res.send(baraja);
-    
-});
+
 
 app.listen(3000, ()=>console.log('Server started at localhost:3000'));
 
