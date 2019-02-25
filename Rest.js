@@ -310,9 +310,9 @@ var baraja = repartirCartas();
 app.get('/', (req, res)=>res.send('Buenas tardes.'));
 
 app.post('/iniciarjoc/codiPartida', (req, res)=>{
-  console.log('req.body.codi');
-  var partida={codi: req.body.codi};
-  partidas.push(partida);
+  console.log(req.body.codi*1);
+  var partida={codi: req.body.codi*1};
+  partidas.push(partida*1);
   res.send("You have joined lobby "+ req.body.codi);
 });
 
@@ -413,6 +413,14 @@ app.put('/moureJugador/codiPartida/:aposta/:quantitat?', (req, res)=>{
       (apostar)?res.send("You have bet " + apostar):res.send("You must insert credits to bet");
   }else res.send("0 --> Not to bet || 1 --> To bet and insert the quantity you want to bet");
   
+});
+
+app.delete('/acabarJoc/codiPartida', (req, res)=>{
+
+  console.log('req.body.codi');
+  var partida={codi: req.body.codi};
+  partidas.splice(partida);
+  res.send("You have joined lobby "+ req.body.codi);
 });
 
 

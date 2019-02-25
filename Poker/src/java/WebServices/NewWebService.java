@@ -21,14 +21,6 @@ import java.util.*;
 @WebService(serviceName = "NewWebService")
 public class NewWebService {
 
-    /**
-     * This is a sample web service operation
-     */
-
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
-    }
 
    ArrayList<Integer> al = new ArrayList<Integer>();
     
@@ -55,19 +47,6 @@ public class NewWebService {
         return true;
     }
     
-    /**
-     * Web service operation
-     */
-    @WebMethod(operationName = "mostrarCodis")
-    public String mostrarCodis(@WebParam(name = "codiPartida") int codiPartida) {
-        String listString = "";
-
-        for (Integer s : al)
-        {
-            listString += s + "\t";
-        }
-        return listString;
-    }
     
     /**
      * Web service operation
