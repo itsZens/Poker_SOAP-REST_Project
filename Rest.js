@@ -308,21 +308,21 @@ function repartirCartas(){
 
 var barajado = repartirCartas();
 
-app.get('/', (req, res)=>res.send('Buenas tardes.'));
+app.get('/', (req, res)=>res.send('Welcome to the main POKER webpage'));
 
 app.post('/iniciarJoc/codiPartida', (req, res)=>{
   var partida={codi: parseInt(req.body.codi)};
    
   console.log(partida);
   partidas.push(partida);
-  res.send("Has entrado en la sala " + parseInt(req.body.codi));
+  res.send("You have joined the lobby " + parseInt(req.body.codi));
 
 });
 app.get('/obtenirCarta/:codi', (req, res)=>{
   var partida = partidas.find(a =>a.codi===parseInt(req.params.codi));
   console.log(partida);
 
-  if (typeof partida == "undefined"){ res.send('error NO EXISTE EL CODIGO DE PARTIDA');}
+  if (typeof partida == "undefined"){ res.send('Error => Game ID does not exist');}
   else{
       var p = [];
       var p1 = [];
@@ -357,7 +357,7 @@ app.get('/obtenirCarta/:codi', (req, res)=>{
           }
           //res.send(cartasTotales[i].palo);
     }
-    res.send("Carta repartida");
+    res.send("Card distributed");
       //cartasMostrar += `<img width="5%" src=${JSON.stringify(robo.imagen)}/> `;
       //console.log(robo);
   }
@@ -368,7 +368,7 @@ app.get('/mostrarcartes/:codi', (req, res)=>{
   var partida = partidas.find(a =>a.codi===parseInt(req.params.codi));
 
   console.log(partida);
-  if (typeof partida == "undefined"){ res.send('error NO EXISTE EL CODIGO DE PARTIDA');}
+  if (typeof partida == "undefined"){ res.send('Error => Game ID does not exist');}
   else{
     var cont =0;
       if(cont==0){
@@ -389,7 +389,7 @@ app.get('/mostrarcartes/:codi', (req, res)=>{
 app.put('/tirarCarta/:codi/:carta', (req, res)=>{
   var partida = partidas.find(a =>a.codi===parseInt(req.params.codi));
   console.log(partida);
-  if (typeof partida == "undefined"){ res.send('error NO EXISTE EL CODIGO DE PARTIDA');}
+  if (typeof partida == "undefined"){ res.send('Error => Game ID does not exist');}
   else{
   var borrado = parseInt(req.params.carta);
   console.log(borrado);
@@ -425,7 +425,7 @@ app.delete('/acabarJoc/codiPartida', (req, res)=>{
   console.log('req.body.codi');
   var partida={codi: req.body.codi};
   partidas.splice(partida);
-  res.send("You have finised gaame "+ req.body.codi);
+  res.send("You have finished the game "+ req.body.codi);
 });
 
 
