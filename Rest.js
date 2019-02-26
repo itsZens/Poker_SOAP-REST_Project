@@ -5,8 +5,11 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var partidas = [
-];
+var partidas = [];
+var cartasMostrar = "";
+var cartasRobadas = "";
+
+
 
 var cartasTotales = 
 [ 
@@ -272,9 +275,7 @@ var cartasTotales =
     }
   ]
 
-var CartasJugadors = [
-
-];
+var CartasJugadors = [];
 
 function repartirCartas(){
     var p = [];
@@ -305,20 +306,22 @@ function repartirCartas(){
     return p1;
 }
 
-var baraja = repartirCartas();
+var barajado = repartirCartas();
 
 app.get('/', (req, res)=>res.send('Buenas tardes.'));
 
-app.post('/iniciarjoc/codiPartida', (req, res)=>{
-  console.log(req.body.codi*1);
-  var partida={codi: req.body.codi*1};
-  partidas.push(partida*1);
-  res.send("You have joined lobby "+ req.body.codi);
-});
+app.post('/iniciarJoc/codiPartida', (req, res)=>{
+  var partida={codi: parseInt(req.body.codi)};
+   
+  console.log(partida);
+  partidas.push(partida);
+  res.send("Has entrado en la sala " + parseInt(req.body.codi));
 
+});
 app.get('/obtenirCarta/:codi', (req, res)=>{
   var partida = partidas.find(a =>a.codi===parseInt(req.params.codi));
   console.log(partida);
+
   if (typeof partida == "undefined"){ res.send('error NO EXISTE EL CODIGO DE PARTIDA');}
   else{
       var p = [];
@@ -363,14 +366,16 @@ app.get('/obtenirCarta/:codi', (req, res)=>{
 
 app.get('/mostrarcartes/:codi', (req, res)=>{
   var partida = partidas.find(a =>a.codi===parseInt(req.params.codi));
+
   console.log(partida);
   if (typeof partida == "undefined"){ res.send('error NO EXISTE EL CODIGO DE PARTIDA');}
   else{
+    var cont =0;
       if(cont==0){
   //var cartasMostrar = "";
   for (var i = 0; i < cartasTotales.length; i++){
       for(j=0;j<=5;j++){
-          if(cartasTotales[i].id==barajado[j])
+          if(cartasTotales[i].id==baraja[j])
           cartasMostrar += `<img src=${JSON.stringify(cartasTotales[i].imagen)} width="5%" /> `;
       }
        
@@ -420,7 +425,7 @@ app.delete('/acabarJoc/codiPartida', (req, res)=>{
   console.log('req.body.codi');
   var partida={codi: req.body.codi};
   partidas.splice(partida);
-  res.send("You have joined lobby "+ req.body.codi);
+  res.send("You have finised gaame "+ req.body.codi);
 });
 
 
